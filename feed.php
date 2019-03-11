@@ -19,20 +19,22 @@ function showFeeds(){
     $cache = false;
     $myID = (int)$_GET['id'];
     
-    if(isset($_SESSION[$myID])){
+    startSession();
+    
+    if(isset($_SESSION['Feeds'][$myID])){
         $cache = true;
         $secondsInactive = time() - $_SESSION[$myID]->TimeStamp;
         
-        echo 'Cache from = ' . $_SESSION[$myID]->TimeStamp . '   Current time = ' . time() . '    difference = ' . $secondsInactive . '   ';
+        echo 'Cache from = ' . $_SESSION['Feeds'][$myID]->TimeStamp . '   Current time = ' . time() . '    difference = ' . $secondsInactive . '   ';
         
         if($secondsInactive > $expireAfterSeconds){
-            $_SESSION[$myID]->TimeStamp = time();
-            echo 'session2 = ' . $_SESSION[$myID]->TimeStamp;
+            $_SESSION['Feeds'][$myID]->TimeStamp = time();
+            echo 'session2 = ' . $_SESSION['Feeds'][$myID]->TimeStamp;
             $cache = false;
         }
     }
  
-    if(!isset($_SESSION[$myID]) || $cache == false) {
+    if(!isset($_SESSION['Feeds'][$myID]) || $cache == false) {
         echo 'NEW CACHE';
         $sql = "select FeedURL from p4_feedURLs where FeedID=" . $myID;
         $result = mysqli_query(IDB::conn(),$sql) or die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
@@ -55,12 +57,12 @@ function showFeeds(){
                 
         usort($Stories, 'sort_objects_by_date');
         
-        startSession();
-        $_SESSION[$myID] = new Feed($myID, $Stories, time());
+        $_SESSION['Feeds'] = array();
+        $_SESSION['Feeds'][$myID] = new Feed($myID, $Stories, time());
                                            
     }
     
-    foreach($_SESSION[$myID]->Stories as $story){
+    foreach($_SESSION['Feeds'][$myID]->Stories as $story){
         echo '<a href="' . $story->Link . '"><h3>' . $story->Title . '</h3></a>';
     }
 
@@ -73,17 +75,7 @@ function sort_objects_by_date($a, $b){
     
     return ($a->PubDate > $b->PubDate) ? -1 : 1;
 }
-class Feed{
-    public $ID = 0;
-    public $Stories = array();
-    public $TimeStamp = '';
-    
-    public function __construct($ID, $Stories, $TimeStamp){
-        $this->ID = $ID;
-        $this->Stories = $Stories;
-        $this->TimeStamp = $TimeStamp;
-    }
-}
+
 class Story{
     public $Link = '';
     public $Title = '';
@@ -93,6 +85,18 @@ class Story{
         $this->Link = $Link;
         $this->Title = $Title;   
         $this->PubDate = $PubDate;
+    }
+}
+
+class Feed{
+    public $ID = 0;
+    public $Stories = array();
+    public $TimeStamp = '';
+    
+    public function __construct($ID, $Stories, $TimeStamp){
+        $this->ID = $ID;
+        $this->Stories = $Stories;
+        $this->TimeStamp = $TimeStamp;
     }
 }
 ?>
