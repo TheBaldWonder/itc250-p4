@@ -57,7 +57,7 @@ function showFeeds(){
                 
         usort($Stories, 'sort_objects_by_date');
         
-        $_SESSION['Feeds'] = array();
+        $_SESSION['Feeds'][] = array();
         $_SESSION['Feeds'][$myID] = new Feed($myID, $Stories, time());
                                            
     }
