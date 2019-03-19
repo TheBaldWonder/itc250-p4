@@ -5,7 +5,7 @@
  *
  * @author Michael Rodgers <michael.rodgers312@gmail.com>
  * @version 2019-03-19
- * @link http://michaelrodgers.azurewebsites.net/wn19/RSS/feed.php
+ * @link http://michaelrodgers.azurewebsites.net/wn19/RSS/feed_edit.php
  * @
  * @see feed.php 
  * @see config_inc.php
