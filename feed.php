@@ -1,4 +1,19 @@
 <?php
+
+/**
+ * feed.php loads and parse xml data from various RSS feeds
+ *
+ * 
+ * @author Michael Rodgers <michael.rodgers312@gmail.com>
+ * @version 2019-03-19
+ * @link http://michaelrodgers.azurewebsites.net/wn19/RSS/feed.php
+ * @
+ * @see feed_add.php 
+ * @see feed_edit.php 
+ * @see config_inc.php
+ * @todo none
+ */
+
 require '../inc_0700/config_inc.php';
 spl_autoload_register('MyAutoLoader::NamespaceLoader');
 $config->metaRobots = 'no index, no follow';
