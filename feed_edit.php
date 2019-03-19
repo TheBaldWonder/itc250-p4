@@ -1,4 +1,17 @@
 <?php
+
+/**
+ * feed_edit.php allows users to edit the database and edit RSS feeds to use with feed.php
+ *
+ * @author Michael Rodgers <michael.rodgers312@gmail.com>
+ * @version 2019-03-19
+ * @link http://michaelrodgers.azurewebsites.net/wn19/RSS/feed.php
+ * @
+ * @see feed.php 
+ * @see config_inc.php
+ * @todo none
+ */
+
 require '../inc_0700/config_inc.php';
 get_header();
     
