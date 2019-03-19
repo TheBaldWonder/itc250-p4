@@ -1,7 +1,7 @@
 <?php
 
 /**
- * feed_edit.php allows users to edit the database and edit RSS feeds to use with feed.php
+ * feed_edit.php allows users to edit the database and update RSS feeds to use with feed.php
  *
  * @author Michael Rodgers <michael.rodgers312@gmail.com>
  * @version 2019-03-19
