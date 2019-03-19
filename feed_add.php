@@ -1,12 +1,11 @@
 <?php
 
 /**
- * feed_add.php allows users to edit the database and add RSS feeds to use with feed.php
+ * feed_add.php allows users to add the database new RSS feeds to use with feed.php
  *
- * 
  * @author Michael Rodgers <michael.rodgers312@gmail.com>
  * @version 2019-03-19
- * @link http://michaelrodgers.azurewebsites.net/wn19/RSS/feed.php
+ * @link http://michaelrodgers.azurewebsites.net/wn19/RSS/feed_add.php
  * @
  * @see feed.php 
  * @see config_inc.php
