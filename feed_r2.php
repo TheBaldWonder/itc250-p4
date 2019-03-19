@@ -21,7 +21,7 @@ if(isset($_GET['id']) && (int)$_GET['id'] > 0){
 // show feeds
 function showFeeds(){ 
     //$expireAfterSeconds = 5 * 60; // check how long it has been
-    $expireAfterSeconds = 2 * 6; // test setup
+    $expireAfterSeconds = 2 * 60; // test setup
     $TimeStamp = time(); // intialize timestamp
     $cache = false; //initialize variable
     $myID = (int)$_GET['id'];   // get value of $myID
@@ -30,20 +30,21 @@ function showFeeds(){
     
     //if(!isset($_SESSION['Feeds'][$myID])){
     if(!isset($_SESSION['Feeds'])){
-        $_SESSION['Feeds'] = [];
-        echo "<p>Session variable set</p>";
+        $_SESSION['Feeds'] = array();
+        echo "<p>Session variable was not set</p>";
     }
     else{
-        $secondsInactive = time() - $_SESSION[$TimeStamp]->TimeStamp; //check time last timestamp retrieved.
+        echo "<p>" . $_SESSION['Feeds'][$myID]->TimeStamp . "</p>";
+        $secondsInactive = time() - ($_SESSION['Feeds'][$myID]->TimeStamp); //check time last timestamp retrieved.
 
-        echo "<p>Session variable set</p>"; //test statement
+        echo "<p>Session variable set</p>" . $_SESSION['Feeds'][$myID]->TimeStamp; //test statement
         
         
         //if longer then 10 min, get new cache
         if($secondsInactive > $expireAfterSeconds){ //not seeing this. Why?
             //$_SESSION['Feeds'][$myID]->TimeStamp = time();
-*********** //changed $myID to $TimeStamp here and elsewhere time is saved in $myID     ********************
-            $_SESSION['Feeds'][$TimeStamp]->TimeStamp = time();
+//*********** changed $myID to $TimeStamp here and elsewhere time is saved in $myID     ********************
+            //$_SESSION['Feeds'][$TimeStamp]->TimeStamp = time();
     //        echo 'session2 = ' . $_SESSION['Feeds'][$myID]->TimeStamp;
             $cache = false; // time is up 
             echo "entered here"; //test comment
@@ -59,13 +60,12 @@ function showFeeds(){
     //if(!isset($_SESSION['Feeds'])) {
         
         //echo 'NEW CACHE';
-        //$_SESSION['Feeds'][$myID]->TimeStamp = time(); //set time stamp
+//      $_SESSION['Feeds'][$myID]->TimeStamp = time(); //set time stamp
+//        echo($_SESSION['Feeds'][$myID]->TimeStamp);
+        //$_SESSION['Feeds'][$TimeStamp]->TimeStamp = time(); //set time stamp
+//        echo 'Feed Last Updated = ' . date('m/d/Y H:i:s', $_SESSION['Feeds'][$myID]->TimeStamp); //echo timestamp to visitor
         
-        $_SESSION['Feeds'][$TimeStamp]->TimeStamp = time(); //set time stamp
-        //echo 'Feed Last Updated = ' . date('m/d/Y H:i:s', $_SESSION['Feeds'][$myID]->TimeStamp); //echo timestamp to visitor
-        echo 'Feed Last Updated = ' . date('m/d/Y H:i:s', $_SESSION['Feeds'][$TimeStamp]->TimeStamp); //echo timestamp to visitor
-        
-        echo '<p>stuck here every time</p>';
+//        echo '<p>stuck here every time</p>';
         
         //get feed data:
         $sql = "select FeedURL from p4_feedURLs where FeedID=" . $myID;
@@ -89,13 +89,19 @@ function showFeeds(){
                 
         usort($Stories, 'sort_objects_by_date');
         
-        $_SESSION['Feeds'][] = array();
+ //       $_SESSION['Feeds'][] = array();
         $_SESSION['Feeds'][$myID] = new Feed($myID, $Stories, $TimeStamp);
+        
+        echo "<p>" . $_SESSION['Feeds'][$myID]->TimeStamp . "</p>";
+        //$_SESSION['Feeds'][$TimeStamp]->TimeStamp = time(); //set time stamp
+        echo ' Feed Last Updated = ' . date('m/d/Y H:i:s', $_SESSION['Feeds'][$myID]->TimeStamp); //echo timestamp to visitor
+        
+        echo '<p>stuck here every time</p>';
                                            
     }
     else{ // just return last feed updated time
-        //echo 'Feed Updated = ' . date('m/d/Y H:i:s', $_SESSION['Feeds'][$myID]->TimeStamp); //echo timestamp to visitor
-        echo 'Feed Updated = ' . date('m/d/Y H:i:s', $_SESSION['Feeds'][$TimeStamp]->TimeStamp); //echo timestamp to visitor
+        echo 'Feed Updated = ' . date('m/d/Y H:i:s', $_SESSION['Feeds'][$myID]->TimeStamp); //echo timestamp to visitor
+       // echo 'Feed Updated = ' . date('m/d/Y H:i:s', $_SESSION['Feeds'][$TimeStamp]->TimeStamp); //echo timestamp to visitor
         echo"Entered this statement"; //test statement
     //    echo 'Cache from = ' . $_SESSION['Feeds'][$myID]->TimeStamp . '   Current time = ' . time() . '    difference = ' . $secondsInactive . '   ';
     }
