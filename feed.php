@@ -50,8 +50,6 @@ function showFeeds(){
     }
     if ($cached == false || (time() - $TimeStamp >= 5 * 60)){
         
-        $_SESSION['Feed'] = array();
-        
         $sql = "select FeedURL from p4_feedURLs where FeedID=" . $myID;
         $result = mysqli_query(IDB::conn(),$sql) or die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
                                   
@@ -72,7 +70,7 @@ function showFeeds(){
                 
         usort($Stories, 'sort_objects_by_date');
         
-        $_SESSION['Feed'] = new Feed ($myID, time(), $Stories);
+        $_SESSION['Feed'][] = new Feed ($myID, time(), $Stories);
         echo 'New Session Started at:' . time() . '<br />';
 
     } else { // echo the already-stored data.
